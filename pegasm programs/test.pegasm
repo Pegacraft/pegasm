@@ -1,0 +1,16 @@
+# stack data types
+# chars, strings, int, double
+# stack write examples:c, test, 5, 1.5
+# memory mem [address] [r/w]
+# read adds the value in the address on the stack
+# write adds the value on top of stack to memory
+# example: mem 10 w
+# math operations
+# +, -, *, /, %
+# print command prints top of stack to terminal
+# out
+
+
+10 20 +
+10 +
+out
