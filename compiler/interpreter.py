@@ -4,6 +4,8 @@ program: list = []
 memory: dict = {}
 stack: list = []
 flag: dict = {}
+macro: dict = {}
+macro_origin: int = 0
 program_pointer: int = 0
 blocking: bool = False
 lookup_flag = ''
@@ -168,6 +170,29 @@ def op_swap():
     stack[len(stack) - 2] = save
 
 
+# creates a macro to make code more readable. similar to methods
+def macro_save():
+    global blocking
+    macro[get_from_stack()] = program_pointer
+    blocking = True
+
+
+# the end keyword, to show that a macro is over
+def macro_end():
+    global program_pointer
+    program_pointer = macro_origin
+
+
+# checks if a macro is called and executes it
+def macro_check(keyword: str):
+    global macro_origin, program_pointer
+    if macro.__contains__(keyword):
+        macro_origin = program_pointer
+        program_pointer = macro[keyword]
+        return True
+    return False
+
+
 def check_for_operation(op: str):
     global program_pointer, blocking
     # blocking check
@@ -175,7 +200,9 @@ def check_for_operation(op: str):
         if program[program_pointer + 1] == "flag":
             blocking = False
         program_pointer -= 1
-
+    if op == "end" and blocking:
+        blocking = False
+        return
     if blocking:
         return
 
@@ -215,14 +242,20 @@ def check_for_operation(op: str):
         op_swap()
     elif op == "rm":
         op_remove()
-    # memory manipulation operation
+    # Memory manipulation operation
     elif op == "memw":
         op_memw()
     elif op == "memr":
         op_memr()
+    # Macro check
+    elif op == "macro":
+        macro_save()
+    elif op == "end":
+        macro_end()
     # Stack value write
     else:
-        stack_write(op)
+        if not macro_check(op):
+            stack_write(op)
 
 
 def pegasm_compile(code: list):

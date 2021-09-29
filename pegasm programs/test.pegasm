@@ -1,25 +1,23 @@
-# stack data types
-# chars, strings, int, double
-# stack write examples:c, test, 5, 1.5
-# memory memr/memw
-# read adds the value in the address on the stack
-# write adds the value on top of stack to memory
-# example: 10 0 memw/ 0 memr
-# math operations
-# +, -, *, /, %
-# print command prints top of stack to terminal
-# out
 
-# Tests calculation
-# 10 2 + out
 
-# Tests swap
-# 10 5 swap out
-# swap out
+print1 macro
+test1 out
+end
 
-# Test memory
-# 10 0 memw
-# 0 memr out
+print2 macro
+test2 out
+end
 
-0 0 memw a flag 0 memr 1 + 0 memw 0 memr out 0 memr 10 < a if
+print3 macro
+test3 out
+end
 
+print1
+print2
+print3
+print1
+
+
+
+# prints all numbers from 1 - 10
+# 0 0 memw a flag 0 memr 1 + 0 memw 0 memr out 0 memr 10 < a if
