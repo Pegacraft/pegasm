@@ -3,7 +3,10 @@ import re
 program: list = []
 memory: dict = {}
 stack: list = []
+flag: dict = {}
 program_pointer: int = 0
+blocking: bool = False
+lookup_flag = ''
 
 
 # Get top of stack, value is offset. No value means top
@@ -130,6 +133,33 @@ def cond_more_equal():
     stack.append(1 if get_from_stack(1) >= get_from_stack() else 0)
 
 
+# saves flags that occurred with jump value
+def flag_save():
+    flag[get_from_stack()] = program_pointer
+
+
+# if conditions. First value 1: proceed, 0: jump. Second value: jump to
+def cond_if():
+    global lookup_flag, program_pointer, blocking
+    if get_from_stack(1) == 1:
+        if flag.__contains__(get_from_stack()):
+            program_pointer = int(flag[get_from_stack()])
+        else:
+            lookup_flag = get_from_stack()
+            blocking = True
+
+
+# if conditions. First value 1: jump, 0: proceed. Second value: jump to flag
+def cond_false_if():
+    global lookup_flag, program_pointer, blocking
+    if get_from_stack(1) == 0:
+        if flag.__contains__(get_from_stack()):
+            program_pointer = int(flag[get_from_stack()])
+        else:
+            lookup_flag = get_from_stack()
+            blocking = True
+
+
 # Swaps last value and value before that around
 # Syntax: swap
 def op_swap():
@@ -139,6 +169,16 @@ def op_swap():
 
 
 def check_for_operation(op: str):
+    global program_pointer, blocking
+    # blocking check
+    if op == lookup_flag and blocking:
+        if program[program_pointer + 1] == "flag":
+            blocking = False
+        program_pointer -= 1
+
+    if blocking:
+        return
+
     # Math operation
     if op == '+':
         calc_plus()
@@ -161,6 +201,12 @@ def check_for_operation(op: str):
         cond_less_equal()
     elif op == ">=":
         cond_more_equal()
+    elif op == "flag":
+        flag_save()
+    elif op == "if":
+        cond_if()
+    elif op == "!if":
+        cond_false_if()
     # Output operation
     elif op == "out":
         op_out()

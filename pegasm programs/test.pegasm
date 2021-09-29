@@ -21,6 +21,5 @@
 # 10 0 memw
 # 0 memr out
 
-
-
+0 0 memw a flag 0 memr 1 + 0 memw 0 memr out 0 memr 10 < a if
 
