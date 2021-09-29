@@ -108,6 +108,28 @@ def calc_modulo():
     stack_write(get_from_stack(1) % get_from_stack())
 
 
+# does the conditional operations
+# Syntax: <, >, =, <=, >=
+def cond_less():
+    stack.append(1 if get_from_stack(1) < get_from_stack() else 0)
+
+
+def cond_more():
+    stack.append(1 if get_from_stack(1) > get_from_stack() else 0)
+
+
+def cond_equals():
+    stack.append(1 if get_from_stack(1) == get_from_stack() else 0)
+
+
+def cond_less_equal():
+    stack.append(1 if get_from_stack(1) <= get_from_stack() else 0)
+
+
+def cond_more_equal():
+    stack.append(1 if get_from_stack(1) >= get_from_stack() else 0)
+
+
 # Swaps last value and value before that around
 # Syntax: swap
 def op_swap():
@@ -117,6 +139,7 @@ def op_swap():
 
 
 def check_for_operation(op: str):
+    # Math operation
     if op == '+':
         calc_plus()
     elif op == '-':
@@ -127,16 +150,31 @@ def check_for_operation(op: str):
         calc_divide()
     elif op == '%':
         calc_modulo()
+    # Condition operation
+    elif op == "<":
+        cond_less()
+    elif op == ">":
+        cond_more()
+    elif op == "=":
+        cond_equals()
+    elif op == "<=":
+        cond_less_equal()
+    elif op == ">=":
+        cond_more_equal()
+    # Output operation
     elif op == "out":
         op_out()
+    # Stack manipulator operation
     elif op == "swap":
         op_swap()
+    elif op == "rm":
+        op_remove()
+    # memory manipulation operation
     elif op == "memw":
         op_memw()
     elif op == "memr":
         op_memr()
-    elif op == "rm":
-        op_remove()
+    # Stack value write
     else:
         stack_write(op)
 
