@@ -4,7 +4,7 @@ from compiler.interpreter import pegasm_compile
 
 def file_getter(path: str):
     with open(path) as file:
-        content: str = file.read()
+        content: list = file.readlines()
         file.close()
         return content
 
