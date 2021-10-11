@@ -1,23 +1,28 @@
 
+pow macro
+# Writes the values to memory
+exp memw
+rm
+swap
+base memw
+1 res memw
 
-print1 macro
-test1 out
+# Loops and does the calculation
+pow_a flag
+# res * base = res
+res memr base memr swap rm * res memw
+# exp - 1 = exp
+exp memr 1 - exp memw
+exp memr 0 > pow_a if
+
+# Writes the result to the stack
+res memr
 end
 
-print2 macro
-test2 out
-end
 
-print3 macro
-test3 out
-end
-
-print1
-print2
-print3
-print1
-
-
-
-# prints all numbers from 1 - 10
-# 0 0 memw a flag 0 memr 1 + 0 memw 0 memr out 0 memr 10 < a if
+Please\enter\a\base:\ in
+Please\enter\a\exponent:\ in
+swap rm
+pow
+Your\result\is:\ out swap
+out

@@ -56,6 +56,7 @@ def stack_write(val):
     elif is_int(val):
         stack.append(int(val))
     else:
+        val = str(val).replace("\\s", " ")
         stack.append(str(val))
 
 
@@ -63,19 +64,24 @@ def stack_write(val):
 # that as value to write
 # Syntax: memw
 def op_memw():
-    memory[int(get_from_stack())] = get_from_stack(1)
+    memory[get_from_stack()] = get_from_stack(1)
 
 
 # Reads a value from memory. Uses last value as address and adds it on the stack
 # Syntax: memr
 def op_memr():
-    stack.append(memory[int(get_from_stack())])
+    stack.append(memory[get_from_stack()])
 
 
 # Removes the value on top of the stack
 # Syntax rm
 def op_remove():
     stack.pop()
+
+
+# Clears the whole stack. Syntax: clear
+def op_clear():
+    stack.clear()
 
 
 # Outputs top of stack. Syntax: out
@@ -193,6 +199,13 @@ def macro_check(keyword: str):
     return False
 
 
+# Loads a user given input to the stack. The last value on stack will be used as prompt
+# Syntax: in
+def input_in():
+    stack_write(input(get_from_stack()))
+    pass
+
+
 def check_for_operation(op: str):
     global program_pointer, blocking
     # blocking check
@@ -234,14 +247,18 @@ def check_for_operation(op: str):
         cond_if()
     elif op == "!if":
         cond_false_if()
-    # Output operation
+    # In/Output operation
     elif op == "out":
         op_out()
+    elif op == "in":
+        input_in()
     # Stack manipulator operation
     elif op == "swap":
         op_swap()
     elif op == "rm":
         op_remove()
+    elif op == "clear":
+        op_clear()
     # Memory manipulation operation
     elif op == "memw":
         op_memw()
