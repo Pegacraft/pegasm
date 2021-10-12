@@ -56,7 +56,7 @@ def stack_write(val):
     elif is_int(val):
         stack.append(int(val))
     else:
-        val = str(val).replace("\\s", " ")
+        val = str(val).replace("\\\\", " ")
         stack.append(str(val))
 
 
@@ -146,7 +146,19 @@ def flag_save():
     flag[get_from_stack()] = program_pointer
 
 
-# if conditions. First value 1: proceed, 0: jump. Second value: jump to
+# Jump to a flag when reached
+# Syntax: jump
+def flag_jump():
+    global lookup_flag, blocking
+    global lookup_flag, program_pointer, blocking
+    if flag.__contains__(get_from_stack()):
+        program_pointer = int(flag[get_from_stack()])
+    else:
+        lookup_flag = get_from_stack()
+        blocking = True
+
+
+# if conditions. First value 0: proceed, 1: jump. Second value: jump to
 def cond_if():
     global lookup_flag, program_pointer, blocking
     if get_from_stack(1) == 1:
@@ -157,7 +169,7 @@ def cond_if():
             blocking = True
 
 
-# if conditions. First value 1: jump, 0: proceed. Second value: jump to flag
+# if conditions. First value 0: jump, 1: proceed. Second value: jump to flag
 def cond_false_if():
     global lookup_flag, program_pointer, blocking
     if get_from_stack(1) == 0:
@@ -243,6 +255,8 @@ def check_for_operation(op: str):
         cond_more_equal()
     elif op == "flag":
         flag_save()
+    elif op == "jump":
+        flag_jump()
     elif op == "if":
         cond_if()
     elif op == "!if":

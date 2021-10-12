@@ -1,28 +1,42 @@
 
 pow macro
 # Writes the values to memory
-exp memw
-rm
-swap
+exp memw rm swap
 base memw
 1 res memw
 
+# Checks for exception
+exp memr = 0 pow_b if
+
 # Loops and does the calculation
 pow_a flag
+
 # res * base = res
 res memr base memr swap rm * res memw
+
 # exp - 1 = exp
 exp memr 1 - exp memw
+
+# Loop check
 exp memr 0 > pow_a if
+pow_c jump
+
+# ^0 exception
+pow_b flag
+1 res memw
 
 # Writes the result to the stack
+pow_c flag
 res memr
 end
 
-
-Please\enter\a\base:\ in
-Please\enter\a\exponent:\ in
+main_a flag
+Please\\enter\\a\\base:\\ in
+Please\\enter\\a\\exponent:\\ in
 swap rm
 pow
-Your\result\is:\ out swap
+Your\\result\\is:\\ out swap
 out
+clear
+main_a jump
+
